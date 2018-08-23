@@ -2,6 +2,9 @@ body {
     background-image: url("../images/background.png");
     background-size: cover;
 }
+.hidden {
+    visibility: hidden;
+}
 .card-img-custom {
     width: 150px;
     height: auto;
