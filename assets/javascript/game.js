@@ -21,7 +21,10 @@ $(document).ready(function(){
             lockChar = true;
         }
         else if(lockEnemy !== true){
-            $("#defender").replaceWith(choosen);
+            $("#defender").css("visibility", "visible");
+            $("#defender-name").text(choosen.name);
+            $("#defender-img").attr("src", choosen.img);
+            $("#defender-hp").text(choosen.hp);
             $(this).remove();
             lockEnemy = true; 
         }
