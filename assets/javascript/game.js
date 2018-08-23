@@ -8,6 +8,11 @@ var lockEnemy = false;
 
 $(document).ready(function(){
 
+    $("#luffy-hp").text(luffy.hp);
+    $("#buggy-hp").text(buggy.hp);
+    $("#kuma-hp").text(kuma.hp);
+    $("#doflamingo-hp").text(doflamingo.hp);
+
     $(".container-fluid").on("click", ".char-choice", function(){
         var choosen = $(this).contents();
         if(lockChar !== true){
@@ -21,5 +26,16 @@ $(document).ready(function(){
             lockEnemy = true; 
         }
     });
+
+    $(".btn").on("click", function(){
+        if(lockChar == false || lockEnemy == false){
+            console.log("nothing happens")
+            return;
+        }
+        else {
+            console.log("You attacked!");
+        }
+    });
+    
 
 });

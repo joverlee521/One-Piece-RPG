@@ -5,6 +5,9 @@ body {
 .hidden {
     visibility: hidden;
 }
+.char-choice {
+    cursor: pointer;
+}
 .card-img-custom {
     width: 150px;
     height: auto;
