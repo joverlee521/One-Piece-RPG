@@ -12,6 +12,25 @@
     <link rel="stylesheet" href="assets/css/style.css">
   </head>
   <body>
+    <!-- Modal for Winning or Losing -->
+    <div class="modal" tabindex="-1" role="dialog" id="win-lose-modal">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row justify-content-center m-5">
+                        <h6 id="win-lose-text"></h6>
+                    </div>
+                    <div class="row justify-content-center">
+                        <!-- Pressing close button will restart the game and also stop sound effects -->
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="window.location.reload(); game.stopAudio(loseAudio); game.stopAudio(winAudio)">Play Again</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!-- Main Content -->
     <div class="container-fluid">
 
         <div class="row justify-content-end">
@@ -40,7 +59,8 @@
                     <div class="col-4 text-center">
                         <p class="hidden3">You did <span id="player-attack"></span> damage to <span class="defender-name"></span>!</p>
                         <button type="button" class="btn btn-danger">ATTACK!</button>
-                        <p class="mt-3 hidden3"><span class="defender-name"></span> counterattacked and did <span id="defender-counter"></span> damage to you!</p>
+                        <p class="mt-3 hidden4"><span class="defender-name"></span> counterattacked and did <span id="defender-counter"></span> damage to you!</p>
+                        <p class="hidden5">You killed <span class="defender-name"></span>!</p>
                     </div>
                     <div class="col-4 text-center">
                         <h4>Defender</h4>
