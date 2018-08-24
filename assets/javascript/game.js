@@ -11,9 +11,31 @@ var newEnemy = false;
 var newPlayerHp = 0;
 var newDefenderHp = 0;
 var newPlayerAttack = 0;
+
+function showAttack(){
+    $(".hidden3").css("visibility", "visible");
+}
+function hideAttack(){
+    $(".hidden3").css("visibility", "hidden");
+} 
+function showCounter(){
+    $(".hidden4").css("visibility", "visible");
+}
+function hideCounter(){
+    $(".hidden4").css("visibility", "hidden");
+}
+function showResult(){
+    $(".hidden5").css("visibility", "visible");
+} 
+function hideResult(){
+    $(".hidden5").css("visibility", "hidden");
+}
 // The Game
 var rpg = {
     startGame(){
+        hideAttack();
+        hideCounter();
+        hideResult();
         // Clicking the characters cards
         $(".container-fluid").on("click", ".char-choice", function(){
             var choosen = $(this).data();
@@ -30,17 +52,16 @@ var rpg = {
             }
             // Player choosing their enemy
             else if(lockEnemy !== true){
-                $(".hidden3").css("visibility", "hidden");
-                $(".hidden4").css("visiblity", "hiddne");
-                $(".hidden5").css("visibility", "hidden");
-                $("#defender").data($(this).data());
+                console.log("choosen enemy")
+                // Prevents the player form choosing another defender
+                lockEnemy = true; 
+                console.log('locked in')
                 $(".hidden2").css("visibility", "visible");
+                $("#defender").data($(this).data());
                 $(".defender-name").text(choosen.name);
                 $("#defender-img").attr("src", choosen.img);
                 $("#defender-hp").text(choosen.hp);
                 $(this).remove();
-                // Prevents the player form choosing another defender
-                lockEnemy = true; 
             }
         });
     },
@@ -54,7 +75,8 @@ var rpg = {
             newDefenderHp = $("#defender").data().hp - $("#player").data().attack;
             newPlayerHp = $("#player").data().hp - $("#defender").data().counter;
             newPlayerAttack = $("#player").data().attack + $("#player").data().attack;
-            $(".hidden3, .hidden4").css("visibility", "visible");
+            showAttack();
+            showCounter();
             $("#player-attack").text($("#player").data().attack);
             $("#defender-counter").text($("#defender").data().counter);
             $("#player-hp").text(newPlayerHp);
@@ -63,11 +85,11 @@ var rpg = {
         }
         // Switching to a new enemy
         else if(newEnemy == true){
-            $(".hidden3").css("visibility", "visible");
-            $(".hidden5").css("visibility", "hidden");
+            showAttack();
+            showCounter();
+            hideResult();
             newDefenderHp = $("#defender").data().hp - newPlayerAttack;
             newPlayerHp = newPlayerHp - $("#defender").data().counter;
-            $(".hidden4").css("visibility", "visible");
             $("#player-attack").text(newPlayerAttack);
             $("#defender-counter").text($("#defender").data().counter);
             $("#player-hp").text(newPlayerHp);
@@ -85,20 +107,26 @@ var rpg = {
                 $("#defender-counter").text($("#defender").data().counter);
                 $("#player-hp").text(newPlayerHp);
             }
-            else{
-                $(".hidden4").css("visibility", "hidden");
-                $(".hidden5").css("visibility", "visible");
-            }
             newPlayerAttack = newPlayerAttack + $("#player").data().attack;
         }
     },
     winRound(){
-        if(newDefenderHp <= 0){
-            lockEnemy = false;
+        if(lockEnemy == true && newDefenderHp <= 0){
+            $(".btn").css("pointer-events", "none");
+            hideCounter();
+            showResult();
             newEnemy = true;
             setTimeout(function(){
                 $(".hidden2").css("visibility", "hidden");
-            }, 1000)
+                hideAttack();
+                hideCounter();
+                hideResult();
+            }, 1500)
+            setTimeout(function(){
+                lockEnemy = false;
+                rpg.winGame();
+                $(".btn").css("pointer-events", "auto");
+            }, 2000);
         }
     },
     loseGame(){
@@ -106,6 +134,18 @@ var rpg = {
             $("#win-lose-text").text("YOU LOST!");
             $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
         }
+    },
+    winGame(){
+        function isEmpty(el){
+            console.log("function run")
+            return !$.trim(el.html());
+        }
+        if(isEmpty($("#enemy-choices")) && lockEnemy == false) {
+            console.log("you win");
+            $("#win-lose-text").text("YOU WIN!");
+            $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
+        }
+        
     }
 }
 $(document).ready(function(){
@@ -115,5 +155,6 @@ $(document).ready(function(){
         rpg.inGame();
         rpg.winRound();
         rpg.loseGame();
+        rpg.winGame();
     });
 });

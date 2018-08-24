@@ -16,6 +16,9 @@
     <div class="modal" tabindex="-1" role="dialog" id="win-lose-modal">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
+            <button type="button" class="close align-self-end m-4" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
             <div class="modal-body">
                 <div class="container-fluid">
                     <div class="row justify-content-center m-5">
@@ -88,7 +91,7 @@
                     </div>
                 </div>
 
-                <div class="row no-gutters">
+                <div class="row no-gutters" id="enemy-choices">
                     <div class="col-3 char-choice" id="luffy">
                         <div class="card text-center">
                             <div class="card-header">
@@ -116,8 +119,8 @@
                             <div class="card-footer">HP: 160</div>
                         </div>
                     </div>
-                    <div class="col-3">
-                        <div class="card text-center char-choice" id="doflamingo">
+                    <div class="col-3 char-choice" id="doflamingo">
+                        <div class="card text-center">
                             <div class="card-header">
                                 Donquixote <br> Doflamingo
                             </div>
