@@ -11,7 +11,7 @@ var newEnemy = false;
 var newPlayerHp = 0;
 var newDefenderHp = 0;
 var newPlayerAttack = 0;
-
+// Functions for showing or hiding results
 function showAttack(){
     $(".hidden3").css("visibility", "visible");
 }
@@ -32,6 +32,7 @@ function hideResult(){
 }
 // The Game
 var rpg = {
+    // Initializes the game
     startGame(){
         hideAttack();
         hideCounter();
@@ -41,21 +42,19 @@ var rpg = {
             var choosen = $(this).data();
             // Player choosing their character
             if(lockChar !== true){
+                // Prevents the player from choosing another character
+                lockChar = true;
                 $("#player").data($(this).data());
                 $(".hidden1").css("visibility", "visible");
                 $("#player-name").text(choosen.name);
                 $("#player-img").attr("src", choosen.img);
                 $("#player-hp").text(choosen.hp);
                 $(this).remove();
-                // Prevents the player from choosing another character
-                lockChar = true;
             }
             // Player choosing their enemy
             else if(lockEnemy !== true){
-                console.log("choosen enemy")
                 // Prevents the player form choosing another defender
                 lockEnemy = true; 
-                console.log('locked in')
                 $(".hidden2").css("visibility", "visible");
                 $("#defender").data($(this).data());
                 $(".defender-name").text(choosen.name);
@@ -65,6 +64,7 @@ var rpg = {
             }
         });
     },
+    // In game logic
     inGame(){
         // Nothing happens when missing a player character and a defender
         if(lockChar == false || lockEnemy == false){
@@ -110,38 +110,42 @@ var rpg = {
             newPlayerAttack = newPlayerAttack + $("#player").data().attack;
         }
     },
+    // Defeating a single enemy
     winRound(){
         if(lockEnemy == true && newDefenderHp <= 0){
+            // Prevents player form hitting attack button when enemy is already defeated
             $(".btn").css("pointer-events", "none");
             hideCounter();
             showResult();
+            // Allows player to choose a new enemy
             newEnemy = true;
             setTimeout(function(){
                 $(".hidden2").css("visibility", "hidden");
                 hideAttack();
                 hideCounter();
                 hideResult();
-            }, 1500)
+            }, 1000)
             setTimeout(function(){
                 lockEnemy = false;
                 rpg.winGame();
                 $(".btn").css("pointer-events", "auto");
-            }, 2000);
+            }, 1500);
         }
     },
+    // Lose the game when player HP reaches 0
     loseGame(){
         if(newDefenderHp > 0 && newPlayerHp <= 0){
             $("#win-lose-text").text("YOU LOST!");
             $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
         }
     },
+    // Winning the entire game when you defeat all enemies
     winGame(){
+        // Makes sure the selected element is empty
         function isEmpty(el){
-            console.log("function run")
             return !$.trim(el.html());
         }
         if(isEmpty($("#enemy-choices")) && lockEnemy == false) {
-            console.log("you win");
             $("#win-lose-text").text("YOU WIN!");
             $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
         }
@@ -151,7 +155,7 @@ var rpg = {
 $(document).ready(function(){
     rpg.startGame();
     // Clicking the attack button
-    $(".btn").on("click", function(){
+    $("#attack-button").on("click", function(){
         rpg.inGame();
         rpg.winRound();
         rpg.loseGame();
