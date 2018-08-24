@@ -3,6 +3,16 @@ $("#luffy").data({ "name": "Monkey D. Luffy", "hp": 120, "attack": 14, "counter"
 $("#buggy").data({ "name": "Buggy The Clown", "hp": 100, "attack": 12, "counter": 3, "img": "assets/images/buggy.png"})
 $("#kuma").data({ "name": "Bartholomew Kuma", "hp": 160, "attack": 16, "counter": 20, "img": "assets/images/kuma.jpg"})
 $("#doflamingo").data({ "name": "Donquixote Doflamingo", "hp": 200, "attack": 20, "counter": 18, "img": "assets/images/doflamingo.jpg"})
+// Music for the game
+var musicsrc = ["assets/sounds/01-we-are.mp3"];
+var audio=new Audio();
+function playMusic(){
+    for(var i = 0; i < musicsrc.length; i++){
+        audio.src = musicsrc[i];
+    }
+    audio.autoplay = true;
+    audio.play();
+}
 // Variable declarations
 var lockChar = false;
 var lockEnemy = false;
@@ -42,6 +52,7 @@ var rpg = {
             var choosen = $(this).data();
             // Player choosing their character
             if(lockChar !== true){
+                playMusic();
                 // Prevents the player from choosing another character
                 lockChar = true;
                 $("#player").data($(this).data());
@@ -149,6 +160,9 @@ var rpg = {
             $("#win-lose-text").text("YOU WIN!");
             $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
         }
+        
+    },
+    musicControl(){
         
     }
 }
