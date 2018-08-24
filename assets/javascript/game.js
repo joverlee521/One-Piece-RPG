@@ -6,6 +6,9 @@ $("#doflamingo").data({ "name": "Donquixote Doflaming", "hp": 200, "attack": 20,
 var lockChar = false;
 var lockEnemy = false;
 
+var newPlayerHp = 0;
+var newDefenderHp = 0;
+var newPlayerAttack = 0;
 
 
 $(document).ready(function(){
@@ -13,7 +16,8 @@ $(document).ready(function(){
     $(".container-fluid").on("click", ".char-choice", function(){
         var choosen = $(this).data();
         if(lockChar !== true){
-            $("#player").css("visibility", "visible");
+            $("#player").data($(this).data());
+            $(".hidden1").css("visibility", "visible");
             $("#player-name").text(choosen.name);
             $("#player-img").attr("src", choosen.img);
             $("#player-hp").text(choosen.hp);
@@ -21,8 +25,9 @@ $(document).ready(function(){
             lockChar = true;
         }
         else if(lockEnemy !== true){
-            $("#defender").css("visibility", "visible");
-            $("#defender-name").text(choosen.name);
+            $("#defender").data($(this).data());
+            $(".hidden2").css("visibility", "visible");
+            $(".defender-name").text(choosen.name);
             $("#defender-img").attr("src", choosen.img);
             $("#defender-hp").text(choosen.hp);
             $(this).remove();
@@ -35,7 +40,9 @@ $(document).ready(function(){
             return;
         }
         else {
-            console.log("You attacked!");
+            $(".hidden3").css("visibility", "visible");
+            $("#player-attack").text($("#player").data().attack);
+            $("#defender-counter").text($("#defender").data().counter);
         }
     });
     

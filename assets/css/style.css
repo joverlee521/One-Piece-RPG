@@ -2,7 +2,7 @@ body {
     background-image: url("../images/background.png");
     background-size: cover;
 }
-.hidden {
+.hidden1, .hidden2, .hidden3 {
     visibility: hidden;
 }
 .char-choice {

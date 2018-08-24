@@ -27,27 +27,27 @@
                         <h4>Your Character</h4>
                         <div class="row">
                             <div class="col-12">
-                                <div class="card text-center hidden" id="player">
+                                <div class="card text-center hidden1" id="player">
                                     <div class="card-header" id="player-name">
                                         Monkey D. Luffy
                                     </div>
-                                    <img class="card-img-top card-img-custom mx-auto" id="player-img" src="assets/images/luffy.jpg" alt="Monkey         D. Luffy">
+                                    <img class="card-img-top card-img-custom mx-auto" id="player-img" src="assets/images/luffy.jpg" alt="Monkey D. Luffy">
                                     <div class="card-footer">HP: <span id="player-hp"></span></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-4 text-center">
-                        <p class="hidden">You did x damage to y!</p>
+                        <p class="hidden3">You did <span id="player-attack"></span> damage to <span class="defender-name"></span>!</p>
                         <button type="button" class="btn btn-danger">ATTACK!</button>
-                        <p class="mt-3 hidden">y counterattacked and did z damage to you!</p>
+                        <p class="mt-3 hidden3"><span class="defender-name"></span> counterattacked and did <span id="defender-counter"></span> damage to you!</p>
                     </div>
                     <div class="col-4 text-center">
                         <h4>Defender</h4>
                         <div class="row">
                             <div class="col-12">
-                                <div class="card text-center hidden" id="defender">
-                                    <div class="card-header" id="defender-name">
+                                <div class="card text-center hidden2" id="defender">
+                                    <div class="card-header defender-name">
                                         Monkey D. Luffy
                                     </div>
                                     <img class="card-img-top card-img-custom mx-auto" id="defender-img" src="assets/images/luffy.jpg" alt="Monkey         D.Luffy">
@@ -63,7 +63,7 @@
             <div class="col-6">
 
                 <div class="row">
-                    <div class="col-12 text-center hidden">
+                    <div class="col-12 hidden1">
                         <h4>Enemies Remaining</h4>
                     </div>
                 </div>
