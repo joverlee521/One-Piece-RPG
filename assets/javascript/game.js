@@ -1,7 +1,7 @@
 // Data sets for the different characters
-$("#luffy").data({ "name": "Monkey D. Luffy", "hp": 120, "attack": 10, "counter": 8, "img": "assets/images/luffy.jpg"})
-$("#buggy").data({ "name": "Buggy The Clown", "hp": 100, "attack": 5, "counter": 3, "img": "assets/images/buggy.png"})
-$("#kuma").data({ "name": "Bartholomew Kuma", "hp": 160, "attack": 12, "counter": 20, "img": "assets/images/kuma.jpg"})
+$("#luffy").data({ "name": "Monkey D. Luffy", "hp": 120, "attack": 14, "counter": 8, "img": "assets/images/luffy.jpg"})
+$("#buggy").data({ "name": "Buggy The Clown", "hp": 100, "attack": 12, "counter": 3, "img": "assets/images/buggy.png"})
+$("#kuma").data({ "name": "Bartholomew Kuma", "hp": 160, "attack": 16, "counter": 20, "img": "assets/images/kuma.jpg"})
 $("#doflamingo").data({ "name": "Donquixote Doflamingo", "hp": 200, "attack": 20, "counter": 18, "img": "assets/images/doflamingo.jpg"})
 // Variable declarations
 var lockChar = false;
