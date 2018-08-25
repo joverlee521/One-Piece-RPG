@@ -4,7 +4,7 @@ $("#buggy").data({ "name": "Buggy The Clown", "hp": 100, "attack": 12, "counter"
 $("#kuma").data({ "name": "Bartholomew Kuma", "hp": 160, "attack": 16, "counter": 20, "img": "assets/images/kuma.jpg"})
 $("#doflamingo").data({ "name": "Donquixote Doflamingo", "hp": 200, "attack": 20, "counter": 18, "img": "assets/images/doflamingo.jpg"})
 // Music for the game
-var musicsrc = ["assets/sounds/01-we-are.mp3"];
+var musicsrc = ["assets/sounds/01-we-are.mp3", "assets/sounds/02-bon-voyage.mp3", "assets/sounds/03-map-of-heart.mp3", "assets/sounds/04-hands-up.mp3"];
 var audio=new Audio();
 var musicPlaying = false;
 // Variable declarations
@@ -15,6 +15,7 @@ var newEnemy = false;
 var newPlayerHp = 0;
 var newDefenderHp = 0;
 var newPlayerAttack = 0;
+var musicIndex = 0;
 // Functions for showing or hiding results
 function showAttack(){
     $(".hidden3").css("visibility", "visible");
@@ -157,13 +158,33 @@ var rpg = {
         
     },
     playMusic(){
-        for(var i = 0; i < musicsrc.length; i++){
-            audio.src = musicsrc[i];
-        }
+        audio.src = musicsrc[musicIndex]
         audio.play();
         musicPlaying = true; 
+        audio.addEventListener("ended", function(){
+            rpg.nextSong();
+        })
     },
-    
+    nextSong(){
+        musicIndex++;
+        if(musicIndex == musicsrc.length){
+            musicIndex = 0;
+            rpg.playMusic();
+        }
+        else{
+        rpg.playMusic();
+        }
+    },
+    previousSong(){
+        musicIndex--;
+        if(musicIndex < 0){
+            musicIndex = (musicsrc.length - 1);
+            rpg.playMusic();
+        }
+        else{
+            rpg.playMusic();
+        }
+    },
     musicControl(){
         $("#play-pause").on("click", function(){
             if(musicPlaying == true){
@@ -177,7 +198,13 @@ var rpg = {
                 musicPlaying = true;
             }
         })
-    }
+        $("#next-song").on("click", function(){
+            rpg.nextSong();
+        })
+        $("#previous-song").on("click", function(){
+            rpg.previousSong();
+        })
+        }
 }
 $(document).ready(function(){
     rpg.startGame();
