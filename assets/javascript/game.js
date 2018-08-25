@@ -6,13 +6,7 @@ $("#doflamingo").data({ "name": "Donquixote Doflamingo", "hp": 200, "attack": 20
 // Music for the game
 var musicsrc = ["assets/sounds/01-we-are.mp3"];
 var audio=new Audio();
-function playMusic(){
-    for(var i = 0; i < musicsrc.length; i++){
-        audio.src = musicsrc[i];
-    }
-    audio.autoplay = true;
-    audio.play();
-}
+var musicPlaying = false;
 // Variable declarations
 var lockChar = false;
 var lockEnemy = false;
@@ -52,7 +46,7 @@ var rpg = {
             var choosen = $(this).data();
             // Player choosing their character
             if(lockChar !== true){
-                playMusic();
+                rpg.playMusic();
                 // Prevents the player from choosing another character
                 lockChar = true;
                 $("#player").data($(this).data());
@@ -162,12 +156,32 @@ var rpg = {
         }
         
     },
+    playMusic(){
+        for(var i = 0; i < musicsrc.length; i++){
+            audio.src = musicsrc[i];
+        }
+        audio.play();
+        musicPlaying = true; 
+    },
+    
     musicControl(){
-        
+        $("#play-pause").on("click", function(){
+            if(musicPlaying == true){
+                audio.pause();
+                $("#play-pause-button").attr("src", "assets/images/glyphicons-174-play.png");
+                musicPlaying = false; 
+            }
+            else {
+                audio.play();
+                $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
+                musicPlaying = true;
+            }
+        })
     }
 }
 $(document).ready(function(){
     rpg.startGame();
+    rpg.musicControl();
     // Clicking the attack button
     $("#attack-button").on("click", function(){
         rpg.inGame();
