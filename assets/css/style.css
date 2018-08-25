@@ -2,6 +2,10 @@ body {
     background-image: url("../images/background.png");
     background-size: cover;
 }
+h4 {
+    background-color: #FCD000;
+    color: #ffffff;
+}
 .hidden1, .hidden2 {
     visibility: hidden;
 }
@@ -11,4 +15,13 @@ body {
 .card-img-custom {
     width: 150px;
     height: auto;
+
+}
+#player-name, #player-footer {
+    background-color: #3DCF87;
+    color: #ffffff;
+}
+#defender-header, #defender-footer {
+    background-color: #AA0000;
+    color: #ffffff;
 }

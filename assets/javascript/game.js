@@ -55,6 +55,7 @@ var rpg = {
                 $("#player-name").text(choosen.name);
                 $("#player-img").attr("src", choosen.img);
                 $("#player-hp").text(choosen.hp);
+                $(".enemy-name, .enemy-footer").css({"background-color": "#000000", "color": "#ffffff"});
                 $(this).remove();
             }
             // Player choosing their enemy
