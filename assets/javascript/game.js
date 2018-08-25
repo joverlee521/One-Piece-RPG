@@ -161,12 +161,14 @@ var rpg = {
         audio.src = musicsrc[musicIndex]
         audio.play();
         musicPlaying = true; 
+        // senses when song has ended and then autoplays next song
         audio.addEventListener("ended", function(){
             rpg.nextSong();
         })
     },
     nextSong(){
         musicIndex++;
+        // prevents musicIndex from getting a value outside of musicsrc array
         if(musicIndex == musicsrc.length){
             musicIndex = 0;
             rpg.playMusic();
@@ -177,6 +179,7 @@ var rpg = {
     },
     previousSong(){
         musicIndex--;
+        // prevents musicIndex from getting a value outside of musicsrc array
         if(musicIndex < 0){
             musicIndex = (musicsrc.length - 1);
             rpg.playMusic();
@@ -186,6 +189,7 @@ var rpg = {
         }
     },
     musicControl(){
+        // toggles play/pause button
         $("#play-pause").on("click", function(){
             if(musicPlaying == true){
                 audio.pause();
