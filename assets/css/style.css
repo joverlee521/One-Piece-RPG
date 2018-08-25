@@ -6,7 +6,7 @@ h4 {
     background-color: #FCD000;
     color: #ffffff;
 }
-.hidden1, .hidden2 {
+.hidden {
     visibility: hidden;
 }
 .char-choice {

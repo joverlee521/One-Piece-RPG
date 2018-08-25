@@ -18,30 +18,27 @@ var newPlayerAttack = 0;
 var musicIndex = 0;
 // Functions for showing or hiding results
 function showAttack(){
-    $(".hidden3").css("visibility", "visible");
+    $("#attack").css("visibility", "visible");
 }
 function hideAttack(){
-    $(".hidden3").css("visibility", "hidden");
+    $("#attack").css("visibility", "hidden");
 } 
 function showCounter(){
-    $(".hidden4").css("visibility", "visible");
+    $("#counter").css("visibility", "visible");
 }
 function hideCounter(){
-    $(".hidden4").css("visibility", "hidden");
+    $("#counter").css("visibility", "hidden");
 }
 function showResult(){
-    $(".hidden5").css("visibility", "visible");
+    $("#result").css("visibility", "visible");
 } 
 function hideResult(){
-    $(".hidden5").css("visibility", "hidden");
+    $("#result").css("visibility", "hidden");
 }
 // The Game
 var rpg = {
     // Initializes the game
     startGame(){
-        hideAttack();
-        hideCounter();
-        hideResult();
         // Clicking the characters cards
         $(".container-fluid").on("click", ".char-choice", function(){
             var choosen = $(this).data();
@@ -51,7 +48,8 @@ var rpg = {
                 // Prevents the player from choosing another character
                 lockChar = true;
                 $("#player").data($(this).data());
-                $(".hidden1").css("visibility", "visible");
+                $("#enemy-choice-title").css("visibility", "visible");
+                $("#player").css({"visibility": "visible", "opacity": 0.0}).animate({"opacity": 1.0}, 500);
                 $("#player-name").text(choosen.name);
                 $("#player-img").attr("src", choosen.img);
                 $("#player-hp").text(choosen.hp);
@@ -62,7 +60,7 @@ var rpg = {
             else if(lockEnemy !== true){
                 // Prevents the player form choosing another defender
                 lockEnemy = true; 
-                $(".hidden2").css("visibility", "visible");
+                $("#defender").css({"visibility": "visible", "opacity": 0.0}).animate({"opacity": 1.0}, 500);
                 $("#defender").data($(this).data());
                 $(".defender-name").text(choosen.name);
                 $("#defender-img").attr("src", choosen.img);
@@ -126,8 +124,8 @@ var rpg = {
             showResult();
             // Allows player to choose a new enemy
             newEnemy = true;
+            $("#defender").animate({"opacity": 0.0}, 1000);
             setTimeout(function(){
-                $(".hidden2").css("visibility", "hidden");
                 hideAttack();
                 hideCounter();
                 hideResult();

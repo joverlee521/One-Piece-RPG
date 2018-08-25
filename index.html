@@ -53,7 +53,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <!-- Place holder for the character card -->
-                                <div class="card text-center hidden1" id="player">
+                                <div class="card text-center hidden" id="player">
                                     <div class="card-header" id="player-name">
                                         Monkey D. Luffy
                                     </div>
@@ -65,10 +65,10 @@
                     </div>
                     <!-- Attack Section -->
                     <div class="col-4 text-center">
-                        <p class="hidden3">You did <span id="player-attack"></span> damage to <span class="defender-name"></span>!</p>
+                        <p class="hidden" id="attack">You did <span id="player-attack"></span> damage to <span class="defender-name"></span>!</p>
                         <button type="button" class="btn btn-danger" id="attack-button">ATTACK!</button>
-                        <p class="mt-3 hidden4"><span class="defender-name"></span> counterattacked and did <span id="defender-counter"></span> damage to you!</p>
-                        <p class="hidden5">You killed <span class="defender-name"></span>!</p>
+                        <p class="mt-3 hidden" id="counter"><span class="defender-name"></span> counterattacked and did <span id="defender-counter"></span> damage to you!</p>
+                        <p class="hidden" id="result">You killed <span class="defender-name"></span>!</p>
                     </div>
                     <!-- Defender Character -->
                     <div class="col-4 text-center">
@@ -76,8 +76,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <!-- Place holder for the defender card -->
-                                <div class="card text-center hidden2" id="defender">
-                                    <div class="card-header defender-name" id="defender-header">
+                                <div class="card text-center hidden" id="defender">
+                                    <div class="card-header defender-name" id="defender-header"j>
                                         Monkey D. Luffy
                                     </div>
                                     <img class="card-img-top card-img-custom mx-auto" id="defender-img" src="assets/images/luffy.jpg" alt="Monkey D.Luffy">
@@ -115,8 +115,8 @@
         <div class="row mt-5">
             <div class="col-6">
                 <div class="row">
-                    <div class="col-6 text-center hidden1">
-                        <h4>Enemies Remaining</h4>
+                    <div class="col-6 text-center hidden">
+                        <h4 id="enemy-choice-title">Enemies Remaining</h4>
                     </div>
                 </div>
                 <!-- Cards for all of the characters available -->
@@ -164,7 +164,7 @@
       
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
     <!-- Custom JavaScript -->
