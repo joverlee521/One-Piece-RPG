@@ -18,17 +18,77 @@ var newPlayerAttack = 0;
 var defenderCounter = 0;
 var musicIndex = 0;
 
+
+// Music Controls
+var music = {
+    playMusic(){
+        var that = this;
+        audio.src = musicsrc[musicIndex]
+        audio.play();
+        musicPlaying = true; 
+        // senses when song has ended and then autoplays next song
+        audio.addEventListener("ended", function(){
+            that.nextSong();
+        })
+    },
+    nextSong(){
+        musicIndex++;
+        // prevents musicIndex from getting a value outside of musicsrc array
+        if(musicIndex == musicsrc.length){
+            musicIndex = 0;
+            this.playMusic();
+        }
+        else{
+        this.playMusic();
+        }
+    },
+    previousSong(){
+        musicIndex--;
+        // prevents musicIndex from getting a value outside of musicsrc array
+        if(musicIndex < 0){
+            musicIndex = (musicsrc.length - 1);
+            this.playMusic();
+        }
+        else{
+            this.playMusic();
+        }
+    },
+    musicControl(){
+        var that = this;
+        // toggles play/pause button
+        $("#play-pause").on("click", function(){
+            if(musicPlaying == true){
+                audio.pause();
+                $("#play-pause-button").attr("src", "assets/images/glyphicons-174-play.png");
+                musicPlaying = false; 
+            }
+            else {
+                audio.play();
+                $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
+                musicPlaying = true;
+            }
+        })
+        $("#next-song").on("click", function(){
+            $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
+            that.nextSong();
+        })
+        $("#previous-song").on("click", function(){
+            $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
+            that.previousSong();
+        })
+    }
+}
+
 // The Game
 var rpg = {
     // Initializes the game
     startGame(){
-        var that = this;
         // Clicking the characters cards
         $(".container-fluid").on("click", ".char-choice", function(){
             var choosen = $(this).data();
             // Player choosing their character
             if(lockChar !== true){
-                that.playMusic();
+                music.playMusic();
                 // Prevents the player from choosing another character
                 lockChar = true;
                 $("#player").data($(this).data());
@@ -107,69 +167,11 @@ var rpg = {
             $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
         }
         
-    },
-    playMusic(){
-        var that = this;
-        audio.src = musicsrc[musicIndex]
-        audio.play();
-        musicPlaying = true; 
-        // senses when song has ended and then autoplays next song
-        audio.addEventListener("ended", function(){
-            that.nextSong();
-        })
-    },
-    nextSong(){
-        var that = this;
-        musicIndex++;
-        // prevents musicIndex from getting a value outside of musicsrc array
-        if(musicIndex == musicsrc.length){
-            musicIndex = 0;
-            that.playMusic();
-        }
-        else{
-        that.playMusic();
-        }
-    },
-    previousSong(){
-        var that = this;
-        musicIndex--;
-        // prevents musicIndex from getting a value outside of musicsrc array
-        if(musicIndex < 0){
-            musicIndex = (musicsrc.length - 1);
-            that.playMusic();
-        }
-        else{
-            that.playMusic();
-        }
-    },
-    musicControl(){
-        var that = this;
-        // toggles play/pause button
-        $("#play-pause").on("click", function(){
-            if(musicPlaying == true){
-                audio.pause();
-                $("#play-pause-button").attr("src", "assets/images/glyphicons-174-play.png");
-                musicPlaying = false; 
-            }
-            else {
-                audio.play();
-                $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
-                musicPlaying = true;
-            }
-        })
-        $("#next-song").on("click", function(){
-            $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
-            that.nextSong();
-        })
-        $("#previous-song").on("click", function(){
-            $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
-            that.previousSong();
-        })
-        }
+    }
 }
 $(document).ready(function(){
     rpg.startGame();
-    rpg.musicControl();
+    music.musicControl();
     // Clicking the attack button
     $("#attack-button").on("click", function(){
         rpg.inGame();
