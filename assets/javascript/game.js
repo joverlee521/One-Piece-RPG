@@ -39,12 +39,13 @@ function hideResult(){
 var rpg = {
     // Initializes the game
     startGame(){
+        var that = this;
         // Clicking the characters cards
         $(".container-fluid").on("click", ".char-choice", function(){
             var choosen = $(this).data();
             // Player choosing their character
             if(lockChar !== true){
-                rpg.playMusic();
+                that.playMusic();
                 // Prevents the player from choosing another character
                 lockChar = true;
                 $("#player").data($(this).data());
@@ -117,6 +118,7 @@ var rpg = {
     },
     // Defeating a single enemy
     winRound(){
+        var that = this;
         if(lockEnemy == true && newDefenderHp <= 0){
             // Prevents player form hitting attack button when enemy is already defeated
             $(".btn").css("pointer-events", "none");
@@ -132,7 +134,7 @@ var rpg = {
             }, 1000)
             setTimeout(function(){
                 lockEnemy = false;
-                rpg.winGame();
+                that.winGame();
                 $(".btn").css("pointer-events", "auto");
             }, 1500);
         }
@@ -157,37 +159,41 @@ var rpg = {
         
     },
     playMusic(){
+        var that = this;
         audio.src = musicsrc[musicIndex]
         audio.play();
         musicPlaying = true; 
         // senses when song has ended and then autoplays next song
         audio.addEventListener("ended", function(){
-            rpg.nextSong();
+            that.nextSong();
         })
     },
     nextSong(){
+        var that = this;
         musicIndex++;
         // prevents musicIndex from getting a value outside of musicsrc array
         if(musicIndex == musicsrc.length){
             musicIndex = 0;
-            rpg.playMusic();
+            that.playMusic();
         }
         else{
-        rpg.playMusic();
+        that.playMusic();
         }
     },
     previousSong(){
+        var that = this;
         musicIndex--;
         // prevents musicIndex from getting a value outside of musicsrc array
         if(musicIndex < 0){
             musicIndex = (musicsrc.length - 1);
-            rpg.playMusic();
+            that.playMusic();
         }
         else{
-            rpg.playMusic();
+            that.playMusic();
         }
     },
     musicControl(){
+        var that = this;
         // toggles play/pause button
         $("#play-pause").on("click", function(){
             if(musicPlaying == true){
@@ -202,10 +208,10 @@ var rpg = {
             }
         })
         $("#next-song").on("click", function(){
-            rpg.nextSong();
+            that.nextSong();
         })
         $("#previous-song").on("click", function(){
-            rpg.previousSong();
+            that.previousSong();
         })
         }
 }
