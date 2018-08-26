@@ -18,50 +18,50 @@ var newPlayerAttack = 0;
 var musicIndex = 0;
 // Functions for showing or hiding results
 function showAttack(){
-    $(".hidden3").css("visibility", "visible");
+    $("#attack").css("visibility", "visible");
 }
 function hideAttack(){
-    $(".hidden3").css("visibility", "hidden");
+    $("#attack").css("visibility", "hidden");
 } 
 function showCounter(){
-    $(".hidden4").css("visibility", "visible");
+    $("#counter").css("visibility", "visible");
 }
 function hideCounter(){
-    $(".hidden4").css("visibility", "hidden");
+    $("#counter").css("visibility", "hidden");
 }
 function showResult(){
-    $(".hidden5").css("visibility", "visible");
+    $("#result").css("visibility", "visible");
 } 
 function hideResult(){
-    $(".hidden5").css("visibility", "hidden");
+    $("#result").css("visibility", "hidden");
 }
 // The Game
 var rpg = {
     // Initializes the game
     startGame(){
-        hideAttack();
-        hideCounter();
-        hideResult();
+        var that = this;
         // Clicking the characters cards
         $(".container-fluid").on("click", ".char-choice", function(){
             var choosen = $(this).data();
             // Player choosing their character
             if(lockChar !== true){
-                rpg.playMusic();
+                that.playMusic();
                 // Prevents the player from choosing another character
                 lockChar = true;
                 $("#player").data($(this).data());
-                $(".hidden1").css("visibility", "visible");
+                $("#enemy-choice-title").css("visibility", "visible");
+                $("#player").css({"visibility": "visible", "opacity": 0.0}).animate({"opacity": 1.0}, 500);
                 $("#player-name").text(choosen.name);
                 $("#player-img").attr("src", choosen.img);
                 $("#player-hp").text(choosen.hp);
+                $(".enemy-name, .enemy-footer").css({"background-color": "#000000", "color": "#ffffff"});
                 $(this).remove();
             }
             // Player choosing their enemy
             else if(lockEnemy !== true){
                 // Prevents the player form choosing another defender
                 lockEnemy = true; 
-                $(".hidden2").css("visibility", "visible");
+                $("#defender").css({"visibility": "visible", "opacity": 0.0}).animate({"opacity": 1.0}, 500);
                 $("#defender").data($(this).data());
                 $(".defender-name").text(choosen.name);
                 $("#defender-img").attr("src", choosen.img);
@@ -118,6 +118,7 @@ var rpg = {
     },
     // Defeating a single enemy
     winRound(){
+        var that = this;
         if(lockEnemy == true && newDefenderHp <= 0){
             // Prevents player form hitting attack button when enemy is already defeated
             $(".btn").css("pointer-events", "none");
@@ -125,15 +126,15 @@ var rpg = {
             showResult();
             // Allows player to choose a new enemy
             newEnemy = true;
+            $("#defender").animate({"opacity": 0.0}, 1000);
             setTimeout(function(){
-                $(".hidden2").css("visibility", "hidden");
                 hideAttack();
                 hideCounter();
                 hideResult();
             }, 1000)
             setTimeout(function(){
                 lockEnemy = false;
-                rpg.winGame();
+                that.winGame();
                 $(".btn").css("pointer-events", "auto");
             }, 1500);
         }
@@ -158,37 +159,41 @@ var rpg = {
         
     },
     playMusic(){
+        var that = this;
         audio.src = musicsrc[musicIndex]
         audio.play();
         musicPlaying = true; 
         // senses when song has ended and then autoplays next song
         audio.addEventListener("ended", function(){
-            rpg.nextSong();
+            that.nextSong();
         })
     },
     nextSong(){
+        var that = this;
         musicIndex++;
         // prevents musicIndex from getting a value outside of musicsrc array
         if(musicIndex == musicsrc.length){
             musicIndex = 0;
-            rpg.playMusic();
+            that.playMusic();
         }
         else{
-        rpg.playMusic();
+        that.playMusic();
         }
     },
     previousSong(){
+        var that = this;
         musicIndex--;
         // prevents musicIndex from getting a value outside of musicsrc array
         if(musicIndex < 0){
             musicIndex = (musicsrc.length - 1);
-            rpg.playMusic();
+            that.playMusic();
         }
         else{
-            rpg.playMusic();
+            that.playMusic();
         }
     },
     musicControl(){
+        var that = this;
         // toggles play/pause button
         $("#play-pause").on("click", function(){
             if(musicPlaying == true){
@@ -203,10 +208,12 @@ var rpg = {
             }
         })
         $("#next-song").on("click", function(){
-            rpg.nextSong();
+            $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
+            that.nextSong();
         })
         $("#previous-song").on("click", function(){
-            rpg.previousSong();
+            $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
+            that.previousSong();
         })
         }
 }
