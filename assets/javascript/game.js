@@ -208,9 +208,11 @@ var rpg = {
             }
         })
         $("#next-song").on("click", function(){
+            $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
             that.nextSong();
         })
         $("#previous-song").on("click", function(){
+            $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
             that.previousSong();
         })
         }
