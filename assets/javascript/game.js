@@ -15,26 +15,9 @@ var newEnemy = false;
 var newPlayerHp = 0;
 var newDefenderHp = 0;
 var newPlayerAttack = 0;
+var defenderCounter = 0;
 var musicIndex = 0;
-// Functions for showing or hiding results
-function showAttack(){
-    $("#attack").css("visibility", "visible");
-}
-function hideAttack(){
-    $("#attack").css("visibility", "hidden");
-} 
-function showCounter(){
-    $("#counter").css("visibility", "visible");
-}
-function hideCounter(){
-    $("#counter").css("visibility", "hidden");
-}
-function showResult(){
-    $("#result").css("visibility", "visible");
-} 
-function hideResult(){
-    $("#result").css("visibility", "hidden");
-}
+
 // The Game
 var rpg = {
     // Initializes the game
@@ -54,6 +37,8 @@ var rpg = {
                 $("#player-name").text(choosen.name);
                 $("#player-img").attr("src", choosen.img);
                 $("#player-hp").text(choosen.hp);
+                newPlayerHp = choosen.hp;
+                newPlayerAttack = choosen.attack;
                 $(".enemy-name, .enemy-footer").css({"background-color": "#000000", "color": "#ffffff"});
                 $(this).remove();
             }
@@ -66,6 +51,8 @@ var rpg = {
                 $(".defender-name").text(choosen.name);
                 $("#defender-img").attr("src", choosen.img);
                 $("#defender-hp").text(choosen.hp);
+                newDefenderHp = choosen.hp;
+                defenderCounter = choosen.counter;
                 $(this).remove();
             }
         });
@@ -76,41 +63,11 @@ var rpg = {
         if(lockChar == false || lockEnemy == false){
             return;
         }
-        // First time the player attacks
-        else if(firstAttack == true){
-            newDefenderHp = $("#defender").data().hp - $("#player").data().attack;
-            newPlayerHp = $("#player").data().hp - $("#defender").data().counter;
-            newPlayerAttack = $("#player").data().attack + $("#player").data().attack;
-            showAttack();
-            showCounter();
-            $("#player-attack").text($("#player").data().attack);
-            $("#defender-counter").text($("#defender").data().counter);
-            $("#player-hp").text(newPlayerHp);
-            $("#defender-hp").text(newDefenderHp);
-            firstAttack = false;
-        }
-        // Switching to a new enemy
-        else if(newEnemy == true){
-            showAttack();
-            showCounter();
-            hideResult();
-            newDefenderHp = $("#defender").data().hp - newPlayerAttack;
-            newPlayerHp = newPlayerHp - $("#defender").data().counter;
-            $("#player-attack").text(newPlayerAttack);
-            $("#defender-counter").text($("#defender").data().counter);
-            $("#player-hp").text(newPlayerHp);
-            $("#defender-hp").text(newDefenderHp);
-            newPlayerAttack = newPlayerAttack + $("#player").data().attack;
-            newEnemy = false;
-        }
-        // All subsequent attacks
         else{
             newDefenderHp = newDefenderHp - newPlayerAttack;
             $("#defender-hp").text(newDefenderHp);
-            $("#player-attack").text(newPlayerAttack);
             if(newDefenderHp > 0){
                 newPlayerHp = newPlayerHp - $("#defender").data().counter;
-                $("#defender-counter").text($("#defender").data().counter);
                 $("#player-hp").text(newPlayerHp);
             }
             newPlayerAttack = newPlayerAttack + $("#player").data().attack;
@@ -122,16 +79,9 @@ var rpg = {
         if(lockEnemy == true && newDefenderHp <= 0){
             // Prevents player form hitting attack button when enemy is already defeated
             $(".btn").css("pointer-events", "none");
-            hideCounter();
-            showResult();
             // Allows player to choose a new enemy
             newEnemy = true;
             $("#defender").animate({"opacity": 0.0}, 1000);
-            setTimeout(function(){
-                hideAttack();
-                hideCounter();
-                hideResult();
-            }, 1000)
             setTimeout(function(){
                 lockEnemy = false;
                 that.winGame();
