@@ -18,7 +18,6 @@ var newPlayerAttack = 0;
 var defenderCounter = 0;
 var musicIndex = 0;
 
-
 // Music Controls
 var music = {
     playMusic(){
@@ -119,19 +118,44 @@ var rpg = {
     },
     // In game logic
     inGame(){
+        var that = this;
         // Nothing happens when missing a player character and a defender
         if(lockChar == false || lockEnemy == false){
             return;
         }
         else{
+            this.attackPopover();
             newDefenderHp = newDefenderHp - newPlayerAttack;
             $("#defender-hp").text(newDefenderHp);
-            if(newDefenderHp > 0){
-                newPlayerHp = newPlayerHp - $("#defender").data().counter;
-                $("#player-hp").text(newPlayerHp);
-            }
+            setTimeout(function(){
+                if(newDefenderHp > 0){
+                    that.counterPopover();
+                    newPlayerHp = newPlayerHp - $("#defender").data().counter;
+                    $("#player-hp").text(newPlayerHp);
+                }
+            }, 1500);
             newPlayerAttack = newPlayerAttack + $("#player").data().attack;
         }
+    },
+    attackPopover(){
+        $("#player").popover({
+            title: function(){return $("#player").data().name + " Attacked!"},
+            content: function(){return "You did " + newPlayerAttack + " damage to " + $("#defender").data().name},
+            html: true,
+            placement: "right"
+        });
+        $("#player").popover("show");
+        setTimeout(function(){$("#player").popover("hide")}, 1500);
+    },
+    counterPopover(){
+        $("#defender").popover({
+            title: function(){return $("#defender").data().name + " Counter-attacked!"},
+            content: function(){return "He did " + defenderCounter + " damage to you!"},
+            html: true,
+            placement: "left"
+        });
+        $("#defender").popover("show");
+        setTimeout(function(){$("#defender").popover("hide")}, 1500);
     },
     // Defeating a single enemy
     winRound(){
