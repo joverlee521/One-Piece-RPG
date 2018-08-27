@@ -149,7 +149,7 @@ var rpg = {
     },
     counterPopover(){
         $("#defender").popover({
-            title: function(){return $("#defender").data().name + " Counter-attacked!"},
+            title: function(){return $("#defender").data().name + " Countered!"},
             content: function(){return "He did " + defenderCounter + " damage to you!"},
             html: true,
             placement: "left"

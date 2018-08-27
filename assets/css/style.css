@@ -17,6 +17,9 @@ h4 {
     height: auto;
 
 }
+.popover{
+    background-color:#FDFCC8;
+}
 #player-name, #player-footer {
     background-color: #3DCF87;
     color: #ffffff;
