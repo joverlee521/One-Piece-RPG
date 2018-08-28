@@ -1,8 +1,8 @@
 // Data sets for the different characters
 $("#luffy").data({ "name": "Monkey D. Luffy", "hp": 120, "attack": 14, "counter": 8, "img": "assets/images/luffy.jpg"})
 $("#buggy").data({ "name": "Buggy The Clown", "hp": 100, "attack": 12, "counter": 3, "img": "assets/images/buggy.png"})
-$("#kuma").data({ "name": "Bartholomew Kuma", "hp": 160, "attack": 16, "counter": 20, "img": "assets/images/kuma.jpg"})
-$("#doflamingo").data({ "name": "Donquixote Doflamingo", "hp": 200, "attack": 20, "counter": 18, "img": "assets/images/doflamingo.jpg"})
+$("#kuma").data({ "name": "Bartholomew Kuma", "hp": 160, "attack": 16, "counter": 25, "img": "assets/images/kuma.jpg"})
+$("#doflamingo").data({ "name": "Donquixote Doflamingo", "hp": 200, "attack": 20, "counter": 20, "img": "assets/images/doflamingo.jpg"})
 // Music for the game
 var musicsrc = ["assets/sounds/01-we-are.mp3", "assets/sounds/02-bon-voyage.mp3", "assets/sounds/03-map-of-heart.mp3", "assets/sounds/04-hands-up.mp3"];
 var audio=new Audio();
@@ -10,6 +10,7 @@ var musicPlaying = false;
 // Variable declarations
 var lockChar = false;
 var lockEnemy = false;
+var firstGame = true;
 var enemyList = [];
 var newPlayerHp = 0;
 var newDefenderHp = 0;
@@ -31,6 +32,7 @@ var music = {
     },
     nextSong(){
         musicIndex++;
+        $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
         // prevents musicIndex from getting a value outside of musicsrc array
         if(musicIndex == musicsrc.length){
             musicIndex = 0;
@@ -42,6 +44,7 @@ var music = {
     },
     previousSong(){
         musicIndex--;
+        $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
         // prevents musicIndex from getting a value outside of musicsrc array
         if(musicIndex < 0){
             musicIndex = (musicsrc.length - 1);
@@ -67,11 +70,9 @@ var music = {
             }
         })
         $("#next-song").on("click", function(){
-            $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
             that.nextSong();
         })
         $("#previous-song").on("click", function(){
-            $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
             that.previousSong();
         })
     }
@@ -79,21 +80,30 @@ var music = {
 
 // The Game
 var rpg = {
+    // Used to reset the game if the player wins and wants to play again
     initializeGame(){
+        firstGame = false; 
+        music.nextSong();
+        $("#enemy-choice-title").css("visibility", "hidden");
         $.each(enemyList, function(i, v){
             $("#enemy-choices").append(v);
         });
         lockChar = false;
         $("#player").css("visibility", "hidden");
+        enemyList = [];
+        console.log(enemyList);
     },
     // Starts the game
     startGame(){
         // Clicking the characters cards
         $(".container-fluid").on("click", ".char-choice", function(){
             var choosen = $(this).data();
+            console.log(choosen);
             // Player choosing their character
             if(lockChar !== true){
-                music.playMusic();
+                if(firstGame == true){
+                    music.playMusic();
+                }
                 // Prevents the player from choosing another character
                 lockChar = true;
                 $("#player").data($(this).data());
@@ -118,7 +128,7 @@ var rpg = {
                 $("#defender-hp").text(choosen.hp);
                 newDefenderHp = choosen.hp;
                 defenderCounter = choosen.counter;
-                enemyList.push($(this).remove());
+                enemyList.push($(this).detach());
             }
         });
     },
@@ -133,13 +143,14 @@ var rpg = {
             this.attackPopover();
             newDefenderHp = newDefenderHp - newPlayerAttack;
             $("#defender-hp").text(newDefenderHp);
-            setTimeout(function(){
-                if(newDefenderHp > 0){
+            if(newDefenderHp > 0){
+                setTimeout(function(){
                     that.counterPopover();
                     newPlayerHp = newPlayerHp - $("#defender").data().counter;
                     $("#player-hp").text(newPlayerHp);
-                }
-            }, 1500);
+                }, 1500);
+                setTimeout(function(){that.loseGame()}, 3500);
+            }
             newPlayerAttack = newPlayerAttack + $("#player").data().attack;
         }
     },
@@ -195,7 +206,6 @@ var rpg = {
         if(isEmpty($("#enemy-choices")) && lockEnemy == false) {
             $("#win-lose-text").text("YOU WIN!");
             $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
-            music.nextSong();
         }
         
     }
@@ -207,7 +217,6 @@ $(document).ready(function(){
     $("#attack-button").on("click", function(){
         rpg.inGame();
         rpg.winRound();
-        rpg.loseGame();
         rpg.winGame();
     });
 });
