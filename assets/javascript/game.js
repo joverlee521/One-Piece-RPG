@@ -84,11 +84,13 @@ var rpg = {
     initializeGame(){
         firstGame = false; 
         music.nextSong();
+        $("#defender").css("visibility", "hidden");
         $("#enemy-choice-title").css("visibility", "hidden");
         $.each(enemyList, function(i, v){
             $("#enemy-choices").append(v);
         });
         lockChar = false;
+        lockEnemy = false;
         $("#player").css("visibility", "hidden");
         enemyList = [];
         console.log(enemyList);
