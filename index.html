@@ -28,7 +28,7 @@
                     </div>
                     <div class="row justify-content-center">
                         <!-- Pressing close button will restart the game-->
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="rpg.initializeGame()">Play Again</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="rpg.resetGame()">Play Again</button>
                     </div>
                 </div>
             </div>
@@ -164,6 +164,7 @@
                         <h4>High Score</h4>
                     </div>
                 </div>
+                <!-- High score board -->
                 <div class="row">
                     <div class="col">
                         <table class="table table-striped">
@@ -177,18 +178,18 @@
                           <tbody>
                             <tr>
                               <th scope="row">1</th>
-                              <td></td>
-                              <td></td>
+                              <td id="name1"></td>
+                              <td id="hp1"></td>
                             </tr>
                             <tr>
                               <th scope="row">2</th>
-                              <td></td>
-                              <td></td>
+                              <td id="name2"></td>
+                              <td id="hp2"></td>
                             </tr>
                             <tr>
                               <th scope="row">3</th>
-                              <td></td>
-                              <td></td>
+                              <td id="name3"></td>
+                              <td id="hp3"></td>
                             </tr>
                           </tbody>
                         </table>

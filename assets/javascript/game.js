@@ -14,16 +14,16 @@ var lockChar = false;
 var lockEnemy = false;
 var firstGame = true;
 var enemyList = [];
-var highScore = [];
-function highScoreObject(name, hp){
-    this.name = name;
-    this.hp = hp;
-}
 var newPlayerHp = 0;
 var newDefenderHp = 0;
 var newPlayerAttack = 0;
 var defenderCounter = 0;
-
+var highScore = [];
+// Constructor for creating highscore objects
+function highScoreObject(name, hp){
+    this.name = name;
+    this.hp = hp;
+}
 // Music Controls
 var music = {
     playMusic(){
@@ -87,17 +87,23 @@ var music = {
 // The Game
 var rpg = {
     // Used to reset the game if the player wins and wants to play again
-    initializeGame(){
+    resetGame(){
         firstGame = false; 
+        lockChar = false;
+        lockEnemy = false;
         music.nextSong();
+        $("#player").css("visibility", "hidden");
         $("#defender").css("visibility", "hidden");
         $("#enemy-choice-title").css("visibility", "hidden");
+        // Resets the enemy list
         $.each(enemyList, function(i, v){
             $("#enemy-choices").append(v);
         });
-        lockChar = false;
-        lockEnemy = false;
-        $("#player").css("visibility", "hidden");
+        // Displays to the high score board
+        for(var i = 0; i < highScore.length; i++){
+            $("#name" + (i+1)).text(highScore[i].name);
+            $("#hp"+ (i+1)).text(highScore[i].hp);
+        }
         enemyList = [];
     },
     // Starts the game
