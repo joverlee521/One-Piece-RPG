@@ -7,6 +7,8 @@ $("#doflamingo").data({ "name": "Donquixote Doflamingo", "hp": 200, "attack": 20
 var musicsrc = ["assets/sounds/01-we-are.mp3", "assets/sounds/02-bon-voyage.mp3", "assets/sounds/03-map-of-heart.mp3", "assets/sounds/04-hands-up.mp3"];
 var audio=new Audio();
 var musicPlaying = false;
+var musicIndex = 0;
+
 // Variable declarations
 var lockChar = false;
 var lockEnemy = false;
@@ -16,8 +18,12 @@ var newPlayerHp = 0;
 var newDefenderHp = 0;
 var newPlayerAttack = 0;
 var defenderCounter = 0;
-var musicIndex = 0;
-
+var highScore = [];
+// Constructor for creating highscore objects
+function highScoreObject(name, hp){
+    this.name = name;
+    this.hp = hp;
+}
 // Music Controls
 var music = {
     playMusic(){
@@ -81,26 +87,30 @@ var music = {
 // The Game
 var rpg = {
     // Used to reset the game if the player wins and wants to play again
-    initializeGame(){
+    resetGame(){
         firstGame = false; 
+        lockChar = false;
+        lockEnemy = false;
         music.nextSong();
+        $("#player").css("visibility", "hidden");
         $("#defender").css("visibility", "hidden");
         $("#enemy-choice-title").css("visibility", "hidden");
+        // Resets the enemy list
         $.each(enemyList, function(i, v){
             $("#enemy-choices").append(v);
         });
-        lockChar = false;
-        lockEnemy = false;
-        $("#player").css("visibility", "hidden");
+        // Displays to the high score board
+        for(var i = 0; i < highScore.length; i++){
+            $("#name" + (i+1)).text(highScore[i].name);
+            $("#hp"+ (i+1)).text(highScore[i].hp);
+        }
         enemyList = [];
-        console.log(enemyList);
     },
     // Starts the game
     startGame(){
         // Clicking the characters cards
         $(".container-fluid").on("click", ".char-choice", function(){
             var choosen = $(this).data();
-            console.log(choosen);
             // Player choosing their character
             if(lockChar !== true){
                 if(firstGame == true){
@@ -208,6 +218,11 @@ var rpg = {
         if(isEmpty($("#enemy-choices")) && lockEnemy == false) {
             $("#win-lose-text").text("YOU WIN!");
             $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
+            var winner = new highScoreObject ($("#player").data().name, newPlayerHp);
+            highScore.push(winner);
+            highScore.sort(function(a,b){
+                return b.hp - a.hp;
+            });
         }
         
     }

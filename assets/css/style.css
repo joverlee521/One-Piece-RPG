@@ -2,6 +2,9 @@ body {
     background-image: url("../images/background.png");
     background-size: cover;
 }
+table {
+    color: #ffffff;
+}
 h4 {
     background-color: #FCD000;
     color: #ffffff;
