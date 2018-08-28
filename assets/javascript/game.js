@@ -205,6 +205,7 @@ var rpg = {
     // Lose the game when player HP reaches 0
     loseGame(){
         if(newDefenderHp > 0 && newPlayerHp <= 0){
+            $("#win-lose-img").attr("src", "assets/images/crying.gif");
             $("#win-lose-text").text("YOU LOST!");
             $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
         }
@@ -216,6 +217,7 @@ var rpg = {
             return !$.trim(el.html());
         }
         if(isEmpty($("#enemy-choices")) && lockEnemy == false) {
+            $("#win-lose-img").attr("src", "assets/images/celebration.gif");
             $("#win-lose-text").text("YOU WIN!");
             $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
             var winner = new highScoreObject ($("#player").data().name, newPlayerHp);
