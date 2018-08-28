@@ -10,8 +10,7 @@ var musicPlaying = false;
 // Variable declarations
 var lockChar = false;
 var lockEnemy = false;
-var firstAttack = true;
-var newEnemy = false;
+var enemyList = [];
 var newPlayerHp = 0;
 var newDefenderHp = 0;
 var newPlayerAttack = 0;
@@ -80,7 +79,14 @@ var music = {
 
 // The Game
 var rpg = {
-    // Initializes the game
+    initializeGame(){
+        $.each(enemyList, function(i, v){
+            $("#enemy-choices").append(v);
+        });
+        lockChar = false;
+        $("#player").css("visibility", "hidden");
+    },
+    // Starts the game
     startGame(){
         // Clicking the characters cards
         $(".container-fluid").on("click", ".char-choice", function(){
@@ -99,7 +105,7 @@ var rpg = {
                 newPlayerHp = choosen.hp;
                 newPlayerAttack = choosen.attack;
                 $(".enemy-name, .enemy-footer").css({"background-color": "#000000", "color": "#ffffff"});
-                $(this).remove();
+                enemyList.push($(this).detach());
             }
             // Player choosing their enemy
             else if(lockEnemy !== true){
@@ -112,7 +118,7 @@ var rpg = {
                 $("#defender-hp").text(choosen.hp);
                 newDefenderHp = choosen.hp;
                 defenderCounter = choosen.counter;
-                $(this).remove();
+                enemyList.push($(this).remove());
             }
         });
     },
@@ -189,6 +195,7 @@ var rpg = {
         if(isEmpty($("#enemy-choices")) && lockEnemy == false) {
             $("#win-lose-text").text("YOU WIN!");
             $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
+            music.nextSong();
         }
         
     }
