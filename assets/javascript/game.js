@@ -7,16 +7,22 @@ $("#doflamingo").data({ "name": "Donquixote Doflamingo", "hp": 200, "attack": 20
 var musicsrc = ["assets/sounds/01-we-are.mp3", "assets/sounds/02-bon-voyage.mp3", "assets/sounds/03-map-of-heart.mp3", "assets/sounds/04-hands-up.mp3"];
 var audio=new Audio();
 var musicPlaying = false;
+var musicIndex = 0;
+
 // Variable declarations
 var lockChar = false;
 var lockEnemy = false;
 var firstGame = true;
 var enemyList = [];
+var highScore = [];
+function highScoreObject(name, hp){
+    this.name = name;
+    this.hp = hp;
+}
 var newPlayerHp = 0;
 var newDefenderHp = 0;
 var newPlayerAttack = 0;
 var defenderCounter = 0;
-var musicIndex = 0;
 
 // Music Controls
 var music = {
@@ -93,14 +99,12 @@ var rpg = {
         lockEnemy = false;
         $("#player").css("visibility", "hidden");
         enemyList = [];
-        console.log(enemyList);
     },
     // Starts the game
     startGame(){
         // Clicking the characters cards
         $(".container-fluid").on("click", ".char-choice", function(){
             var choosen = $(this).data();
-            console.log(choosen);
             // Player choosing their character
             if(lockChar !== true){
                 if(firstGame == true){
@@ -208,6 +212,11 @@ var rpg = {
         if(isEmpty($("#enemy-choices")) && lockEnemy == false) {
             $("#win-lose-text").text("YOU WIN!");
             $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
+            var winner = new highScoreObject ($("#player").data().name, newPlayerHp);
+            highScore.push(winner);
+            highScore.sort(function(a,b){
+                return b.hp - a.hp;
+            });
         }
         
     }
