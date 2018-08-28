@@ -1,5 +1,7 @@
-# unit-4-game
-A simple RPG based on the anime "One Piece"
+# unit-4-game 
+A simple RPG based on the anime "One Piece" 
+
+![One Piece](https://github.com/joverlee521/unit-4-game/blob/master/assets/images/logo.png)
 
 ## How to Play
 1. Click on one of the characters to choose your character.
