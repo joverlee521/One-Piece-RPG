@@ -1,8 +1,8 @@
 // Data sets for the different characters
-$("#luffy").data({ "name": "Monkey D. Luffy", "hp": 120, "attack": 14, "counter": 8, "img": "assets/images/luffy.jpg"})
-$("#buggy").data({ "name": "Buggy The Clown", "hp": 100, "attack": 12, "counter": 3, "img": "assets/images/buggy.png"})
-$("#kuma").data({ "name": "Bartholomew Kuma", "hp": 160, "attack": 16, "counter": 25, "img": "assets/images/kuma.jpg"})
-$("#doflamingo").data({ "name": "Donquixote Doflamingo", "hp": 200, "attack": 20, "counter": 20, "img": "assets/images/doflamingo.jpg"})
+$("#luffy").data({ "name": "Monkey D. Luffy", "hp": 120, "attack": 8, "counter": 10, "img": "assets/images/luffy.jpg"})
+$("#buggy").data({ "name": "Buggy The Clown", "hp": 100, "attack": 12, "counter": 5, "img": "assets/images/buggy.png"})
+$("#kuma").data({ "name": "Bartholomew Kuma", "hp": 150, "attack": 5, "counter": 20, "img": "assets/images/kuma.jpg"})
+$("#doflamingo").data({ "name": "Donquixote Doflamingo", "hp": 180, "attack": 3, "counter": 25, "img": "assets/images/doflamingo.jpg"})
 // Music for the game
 var musicSrc = ["assets/sounds/01-we-are.mp3", "assets/sounds/02-bon-voyage.mp3", "assets/sounds/03-map-of-heart.mp3", "assets/sounds/04-hands-up.mp3"];
 var audio=new Audio();
