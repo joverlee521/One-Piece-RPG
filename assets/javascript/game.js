@@ -37,13 +37,16 @@ var music = {
             that.changeSong();
         })
     },
+    // Changes to next song or previous song depending on how musicIndex was changed
     changeSong(){
         $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png");
-        // Prevents musicIndex from getting outside of musicsrc
+        // Prevents musicIndex from getting outside of musicSrc
         if(musicIndex == musicSrc.length){
+            // Returns to the first song
             musicIndex = 0;
         }
         else if (musicIndex < 0){
+            // Returns to the last song
             musicIndex = (musicSrc.length - 1);
         }
         this.playMusic();
@@ -52,21 +55,25 @@ var music = {
         var that = this;
         // toggles play/pause button
         $("#play-pause").on("click", function(){
+            // Pauses song
             if(musicPlaying == true){
                 audio.pause();
                 $("#play-pause-button").attr("src", "assets/images/glyphicons-174-play.png");
                 musicPlaying = false; 
             }
+            // Plays song
             else {
                 audio.play();
                 $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
                 musicPlaying = true;
             }
         })
+        // Plays next song
         $("#next-song").on("click", function(){
             musicIndex++;
             that.changeSong();
         })
+        // Plays previous song
         $("#previous-song").on("click", function(){
             musicIndex--;
             that.changeSong();
@@ -76,6 +83,134 @@ var music = {
 
 // The Game
 var rpg = {
+    // Starts the game
+    startGame(){
+        // Clicking the characters cards
+        $(".container-fluid").on("click", ".char-choice", function(){
+            var choosen = $(this).data();
+            // Player choosing their character
+            if(lockChar !== true){
+                if(firstGame == true){
+                    music.playMusic();
+                }
+                lockChar = true; // Prevents the player from choosing another character
+                $("#player").data($(this).data()); // Sets player data equal to that of clicked card
+                $("#enemy-choice-title").css("visibility", "visible");
+                $(".enemy-name, .enemy-footer").css({"background-color": "#000000", "color": "#ffffff"});
+                // Sets up player card data for display
+                $("#player-name").text(choosen.name);
+                $("#player-img").attr("src", choosen.img);
+                $("#player-hp").text(choosen.hp);
+                // Animation for displaying player card
+                $("#player").css({"visibility": "visible", "opacity": 0.0}).animate({"opacity": 1.0}, 500);
+                // Initializes player variables
+                newPlayerHp = choosen.hp;
+                newPlayerAttack = choosen.attack;
+            }
+            // Player choosing their enemy
+            else if(lockEnemy !== true){
+                lockEnemy = true; // Prevents the player form choosing another defender
+                $("#defender").data($(this).data()); //Sets defender data equal to that of clicked card
+                // Sets up defender card data for display
+                $(".defender-name").text(choosen.name);
+                $("#defender-img").attr("src", choosen.img);
+                $("#defender-hp").text(choosen.hp);
+                // Animation for displaying defender card
+                $("#defender").css({"visibility": "visible", "opacity": 0.0}).animate({"opacity": 1.0}, 500);
+                // Initializes defender variables
+                newDefenderHp = choosen.hp;
+                defenderCounter = choosen.counter;
+            }
+            enemyList.push($(this).detach()); //Pushes clicked card into enemyList array
+        });
+    },
+    // In game logic
+    inGame(){
+        var that = this;
+        // Nothing happens when missing player or a defender
+        if(lockChar == false || lockEnemy == false){
+            return;
+        }
+        else{
+            // Player attacks defender first
+            this.attackPopover();
+            newDefenderHp = newDefenderHp - newPlayerAttack;
+            $("#defender-hp").text(newDefenderHp);
+            // If defender is not dead, then he can counter-attack
+            if(newDefenderHp > 0){
+                setTimeout(function(){
+                    that.counterPopover();
+                    newPlayerHp = newPlayerHp - $("#defender").data().counter;
+                    $("#player-hp").text(newPlayerHp);
+                }, 1500);
+                // The only time you can lose is if defender still has HP
+                setTimeout(function(){that.loseGame()}, 3500);
+            }
+            // Player attack power increases by its base power
+            newPlayerAttack = newPlayerAttack + $("#player").data().attack;
+        }
+    },
+    // Popover for player attacks
+    attackPopover(){
+        $("#player").popover({
+            title: function(){return $("#player").data().name + " Attacked!"},
+            content: function(){return "You did " + newPlayerAttack + " damage to " + $("#defender").data().name},
+            html: true,
+            placement: "right"
+        });
+        $("#player").popover("show");
+        setTimeout(function(){$("#player").popover("hide")}, 1500);
+    },
+    // Popover for defender counter-attacks
+    counterPopover(){
+        $("#defender").popover({
+            title: function(){return $("#defender").data().name + " Counter-Attacked!"},
+            content: function(){return "He did " + defenderCounter + " damage to you!"},
+            html: true,
+            placement: "left"
+        });
+        $("#defender").popover("show");
+        setTimeout(function(){$("#defender").popover("hide")}, 1500);
+    },
+    // Defeating a single enemy
+    winRound(){
+        var that = this;
+        if(lockEnemy == true && newDefenderHp <= 0){
+            $(".btn").css("pointer-events", "none"); // Prevents player form hitting attack button when enemy is defeated
+            $("#defender").animate({"opacity": 0.0}, 1000); //animation for disappearing defender
+            setTimeout(function(){
+                lockEnemy = false; //Allows player to choose a new enemy
+                that.winGame(); //Can only win game after winning round
+                $(".btn").css("pointer-events", "auto"); //Restores attack button function
+            }, 1500);
+        }
+    },
+    // Lose the game when player HP reaches 0 and defender is still alive
+    loseGame(){
+        if(newDefenderHp > 0 && newPlayerHp <= 0){
+            $("#win-lose-img").attr("src", "assets/images/crying.gif");
+            $("#win-lose-text").text("YOU LOST!");
+            $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
+        }
+    },
+    // Winning the entire game when you defeat all enemies
+    winGame(){
+        // Makes sure the selected element is empty
+        function isEmpty(el){
+            return !$.trim(el.html());
+        }
+        if(isEmpty($("#enemy-choices")) && lockEnemy == false) {
+            $("#win-lose-img").attr("src", "assets/images/celebration.gif");
+            $("#win-lose-text").text("YOU WIN!");
+            $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
+            // Creates a new object with character name and HP
+            var winner = new highScoreObject ($("#player").data().name, newPlayerHp);
+            highScore.push(winner);
+            highScore.sort(function(a,b){ //Sorts from highest to lowest HP
+                return b.hp - a.hp;
+            });
+        }
+    },
     // Used to reset the game if the player wins and wants to play again
     resetGame(){
         firstGame = false; 
@@ -95,128 +230,7 @@ var rpg = {
             $("#name" + (i+1)).text(highScore[i].name);
             $("#hp"+ (i+1)).text(highScore[i].hp);
         }
-        enemyList = [];
-    },
-    // Starts the game
-    startGame(){
-        // Clicking the characters cards
-        $(".container-fluid").on("click", ".char-choice", function(){
-            var choosen = $(this).data();
-            // Player choosing their character
-            if(lockChar !== true){
-                if(firstGame == true){
-                    music.playMusic();
-                }
-                // Prevents the player from choosing another character
-                lockChar = true;
-                $("#player").data($(this).data());
-                $("#enemy-choice-title").css("visibility", "visible");
-                $("#player").css({"visibility": "visible", "opacity": 0.0}).animate({"opacity": 1.0}, 500);
-                $("#player-name").text(choosen.name);
-                $("#player-img").attr("src", choosen.img);
-                $("#player-hp").text(choosen.hp);
-                newPlayerHp = choosen.hp;
-                newPlayerAttack = choosen.attack;
-                $(".enemy-name, .enemy-footer").css({"background-color": "#000000", "color": "#ffffff"});
-                enemyList.push($(this).detach());
-            }
-            // Player choosing their enemy
-            else if(lockEnemy !== true){
-                // Prevents the player form choosing another defender
-                lockEnemy = true; 
-                $("#defender").css({"visibility": "visible", "opacity": 0.0}).animate({"opacity": 1.0}, 500);
-                $("#defender").data($(this).data());
-                $(".defender-name").text(choosen.name);
-                $("#defender-img").attr("src", choosen.img);
-                $("#defender-hp").text(choosen.hp);
-                newDefenderHp = choosen.hp;
-                defenderCounter = choosen.counter;
-                enemyList.push($(this).detach());
-            }
-        });
-    },
-    // In game logic
-    inGame(){
-        var that = this;
-        // Nothing happens when missing a player character and a defender
-        if(lockChar == false || lockEnemy == false){
-            return;
-        }
-        else{
-            this.attackPopover();
-            newDefenderHp = newDefenderHp - newPlayerAttack;
-            $("#defender-hp").text(newDefenderHp);
-            if(newDefenderHp > 0){
-                setTimeout(function(){
-                    that.counterPopover();
-                    newPlayerHp = newPlayerHp - $("#defender").data().counter;
-                    $("#player-hp").text(newPlayerHp);
-                }, 1500);
-                setTimeout(function(){that.loseGame()}, 3500);
-            }
-            newPlayerAttack = newPlayerAttack + $("#player").data().attack;
-        }
-    },
-    attackPopover(){
-        $("#player").popover({
-            title: function(){return $("#player").data().name + " Attacked!"},
-            content: function(){return "You did " + newPlayerAttack + " damage to " + $("#defender").data().name},
-            html: true,
-            placement: "right"
-        });
-        $("#player").popover("show");
-        setTimeout(function(){$("#player").popover("hide")}, 1500);
-    },
-    counterPopover(){
-        $("#defender").popover({
-            title: function(){return $("#defender").data().name + " Countered!"},
-            content: function(){return "He did " + defenderCounter + " damage to you!"},
-            html: true,
-            placement: "left"
-        });
-        $("#defender").popover("show");
-        setTimeout(function(){$("#defender").popover("hide")}, 1500);
-    },
-    // Defeating a single enemy
-    winRound(){
-        var that = this;
-        if(lockEnemy == true && newDefenderHp <= 0){
-            // Prevents player form hitting attack button when enemy is already defeated
-            $(".btn").css("pointer-events", "none");
-            // Allows player to choose a new enemy
-            newEnemy = true;
-            $("#defender").animate({"opacity": 0.0}, 1000);
-            setTimeout(function(){
-                lockEnemy = false;
-                that.winGame();
-                $(".btn").css("pointer-events", "auto");
-            }, 1500);
-        }
-    },
-    // Lose the game when player HP reaches 0
-    loseGame(){
-        if(newDefenderHp > 0 && newPlayerHp <= 0){
-            $("#win-lose-img").attr("src", "assets/images/crying.gif");
-            $("#win-lose-text").text("YOU LOST!");
-            $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
-        }
-    },
-    // Winning the entire game when you defeat all enemies
-    winGame(){
-        // Makes sure the selected element is empty
-        function isEmpty(el){
-            return !$.trim(el.html());
-        }
-        if(isEmpty($("#enemy-choices")) && lockEnemy == false) {
-            $("#win-lose-img").attr("src", "assets/images/celebration.gif");
-            $("#win-lose-text").text("YOU WIN!");
-            $("#win-lose-modal").modal({show: true, keyboard: false, backdrop: "static"});
-            var winner = new highScoreObject ($("#player").data().name, newPlayerHp);
-            highScore.push(winner);
-            highScore.sort(function(a,b){
-                return b.hp - a.hp;
-            });
-        }
+        enemyList = []; //empties the enemyList array
     }
 }
 $(document).ready(function(){
@@ -226,6 +240,5 @@ $(document).ready(function(){
     $("#attack-button").on("click", function(){
         rpg.inGame();
         rpg.winRound();
-        rpg.winGame();
     });
 });
