@@ -4,7 +4,7 @@ $("#buggy").data({ "name": "Buggy The Clown", "hp": 100, "attack": 12, "counter"
 $("#kuma").data({ "name": "Bartholomew Kuma", "hp": 160, "attack": 16, "counter": 25, "img": "assets/images/kuma.jpg"})
 $("#doflamingo").data({ "name": "Donquixote Doflamingo", "hp": 200, "attack": 20, "counter": 20, "img": "assets/images/doflamingo.jpg"})
 // Music for the game
-var musicsrc = ["assets/sounds/01-we-are.mp3", "assets/sounds/02-bon-voyage.mp3", "assets/sounds/03-map-of-heart.mp3", "assets/sounds/04-hands-up.mp3"];
+var musicSrc = ["assets/sounds/01-we-are.mp3", "assets/sounds/02-bon-voyage.mp3", "assets/sounds/03-map-of-heart.mp3", "assets/sounds/04-hands-up.mp3"];
 var audio=new Audio();
 var musicPlaying = false;
 var musicIndex = 0;
@@ -28,37 +28,25 @@ function highScoreObject(name, hp){
 var music = {
     playMusic(){
         var that = this;
-        audio.src = musicsrc[musicIndex]
+        audio.src = musicSrc[musicIndex]
         audio.play();
         musicPlaying = true; 
         // senses when song has ended and then autoplays next song
         audio.addEventListener("ended", function(){
-            that.nextSong();
+            musicIndex ++;
+            that.changeSong();
         })
     },
-    nextSong(){
-        musicIndex++;
-        $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
-        // prevents musicIndex from getting a value outside of musicsrc array
-        if(musicIndex == musicsrc.length){
+    changeSong(){
+        $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png");
+        // Prevents musicIndex from getting outside of musicsrc
+        if(musicIndex == musicSrc.length){
             musicIndex = 0;
-            this.playMusic();
         }
-        else{
+        else if (musicIndex < 0){
+            musicIndex = (musicSrc.length - 1);
+        }
         this.playMusic();
-        }
-    },
-    previousSong(){
-        musicIndex--;
-        $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
-        // prevents musicIndex from getting a value outside of musicsrc array
-        if(musicIndex < 0){
-            musicIndex = (musicsrc.length - 1);
-            this.playMusic();
-        }
-        else{
-            this.playMusic();
-        }
     },
     musicControl(){
         var that = this;
@@ -76,10 +64,12 @@ var music = {
             }
         })
         $("#next-song").on("click", function(){
-            that.nextSong();
+            musicIndex++;
+            that.changeSong();
         })
         $("#previous-song").on("click", function(){
-            that.previousSong();
+            musicIndex--;
+            that.changeSong();
         })
     }
 }
@@ -91,7 +81,8 @@ var rpg = {
         firstGame = false; 
         lockChar = false;
         lockEnemy = false;
-        music.nextSong();
+        musicIndex++;
+        music.changeSong();
         $("#player").css("visibility", "hidden");
         $("#defender").css("visibility", "hidden");
         $("#enemy-choice-title").css("visibility", "hidden");
@@ -226,7 +217,6 @@ var rpg = {
                 return b.hp - a.hp;
             });
         }
-        
     }
 }
 $(document).ready(function(){
