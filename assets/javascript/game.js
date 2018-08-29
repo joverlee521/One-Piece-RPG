@@ -106,6 +106,7 @@ var rpg = {
                 // Initializes player variables
                 newPlayerHp = choosen.hp;
                 newPlayerAttack = choosen.attack;
+                enemyList.push($(this).detach()); //Pushes clicked card into enemyList array
             }
             // Player choosing their enemy
             else if(lockEnemy !== true){
@@ -120,8 +121,8 @@ var rpg = {
                 // Initializes defender variables
                 newDefenderHp = choosen.hp;
                 defenderCounter = choosen.counter;
+                enemyList.push($(this).detach()); //Pushes clicked card into enemyList array
             }
-            enemyList.push($(this).detach()); //Pushes clicked card into enemyList array
         });
     },
     // In game logic
@@ -182,7 +183,7 @@ var rpg = {
                 lockEnemy = false; //Allows player to choose a new enemy
                 that.winGame(); //Can only win game after winning round
                 $(".btn").css("pointer-events", "auto"); //Restores attack button function
-            }, 1500);
+            }, 2500);
         }
     },
     // Lose the game when player HP reaches 0 and defender is still alive
