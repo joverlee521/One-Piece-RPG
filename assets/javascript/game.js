@@ -141,7 +141,7 @@ var rpg = {
                     that.counterPopover();
                     newPlayerHp = newPlayerHp - $("#defender").data().counter;
                     $("#player-hp").text(newPlayerHp);
-                }, 1500);
+                }, 1000);
                 // The only time you can lose is if defender still has HP
                 setTimeout(function(){that.loseGame()}, 3500);
             }
@@ -157,8 +157,9 @@ var rpg = {
             html: true,
             placement: "right"
         });
+        $(".btn").css("pointer-events", "none");
         $("#player").popover("show");
-        setTimeout(function(){$("#player").popover("hide")}, 1500);
+        setTimeout(function(){$("#player").popover("hide")}, 1000);
     },
     // Popover for defender counter-attacks
     counterPopover(){
@@ -169,7 +170,8 @@ var rpg = {
             placement: "left"
         });
         $("#defender").popover("show");
-        setTimeout(function(){$("#defender").popover("hide")}, 1500);
+        setTimeout(function(){$("#defender").popover("hide")}, 1000);
+        $(".btn").css("pointer-events", "auto");
     },
     // Defeating a single enemy
     winRound(){
@@ -181,7 +183,7 @@ var rpg = {
                 lockEnemy = false; //Allows player to choose a new enemy
                 that.winGame(); //Can only win game after winning round
                 $(".btn").css("pointer-events", "auto"); //Restores attack button function
-            }, 2500);
+            }, 2000);
         }
     },
     // Lose the game when player HP reaches 0 and defender is still alive
@@ -215,8 +217,6 @@ var rpg = {
         firstGame = false; 
         lockChar = false;
         lockEnemy = false;
-        musicIndex++;
-        music.changeSong();
         $("#player").css("visibility", "hidden");
         $("#defender").css("visibility", "hidden");
         $("#enemy-choice-title").css("visibility", "hidden");

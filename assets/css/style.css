@@ -22,6 +22,10 @@ h4 {
 }
 .popover{
     background-color:#FDFCC8;
+    top: -100px !important;
+}
+#player, #defender{
+    position: relative;
 }
 #player-name, #player-footer {
     background-color: #3DCF87;
