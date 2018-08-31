@@ -63,7 +63,8 @@ var music = {
             }
             // Plays song
             else {
-                audio.play();
+                console.log("play music")
+                that.playMusic();
                 $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
                 musicPlaying = true;
             }
@@ -90,9 +91,6 @@ var rpg = {
             var choosen = $(this).data();
             // Player choosing their character
             if(lockChar !== true){
-                if(firstGame == true){
-                    music.playMusic();
-                }
                 lockChar = true; // Prevents the player from choosing another character
                 $("#player").data($(this).data()); // Sets player data equal to that of clicked card
                 $("#enemy-choice-title").css("visibility", "visible");
