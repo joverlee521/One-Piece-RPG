@@ -31,6 +31,7 @@ h4 {
 /* Change position to relative so that popover position can be changed */
 #player, #defender{
     position: relative;
+    pointer-events: none;
 }
 #player-name, #player-footer {
     background-color: #3DCF87;

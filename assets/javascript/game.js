@@ -152,7 +152,7 @@ var rpg = {
                     $("#player-hp").text(newPlayerHp);
                 }, 1000);
                 // The only time player can lose is if defender still has HP
-                setTimeout(function(){that.loseGame()}, 3500);
+                setTimeout(function(){that.loseGame()}, 2000);
             }
             // Player attack power increases by its base power
             newPlayerAttack = newPlayerAttack + $("#player").data().attack;
@@ -181,9 +181,12 @@ var rpg = {
             placement: "left"
         });
         $("#defender").popover("show");
-        setTimeout(function(){$("#defender").popover("hide")}, 1000);
-        // Returns attack button functionality
-        $(".btn").css("pointer-events", "auto");
+        setTimeout(function(){
+            $("#defender").popover("hide");
+            // Returns attack button functionality
+            $(".btn").css("pointer-events", "auto");
+        }, 1000);
+        
     },
     // Defeating a single enemy
     winRound(){
