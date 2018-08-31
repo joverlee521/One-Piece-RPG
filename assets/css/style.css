@@ -1,3 +1,4 @@
+/* Background image for the game */
 body {
     background-image: url("../images/background.png");
     background-size: cover;
@@ -9,9 +10,11 @@ h4 {
     background-color: #FCD000;
     color: #ffffff;
 }
+/* Hides certain html elements on page load */
 .hidden {
     visibility: hidden;
 }
+/* Lets player know that the character cards are clickable */
 .char-choice {
     cursor: pointer;
 }
@@ -20,10 +23,12 @@ h4 {
     height: auto;
 
 }
+/* positions popover near the top of the cards */
 .popover{
     background-color:#FDFCC8;
     top: -100px !important;
 }
+/* Change position to relative so that popover position can be changed */
 #player, #defender{
     position: relative;
 }
