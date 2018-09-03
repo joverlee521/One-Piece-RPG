@@ -152,7 +152,7 @@ var rpg = {
                     $("#player-hp").text(newPlayerHp);
                 }, 1000);
                 // The only time player can lose is if defender still has HP
-                setTimeout(function(){that.loseGame()}, 2000);
+                setTimeout(that.loseGame, 2000);
             }
             // Player attack power increases by its base power
             newPlayerAttack = newPlayerAttack + $("#player").data().attack;
