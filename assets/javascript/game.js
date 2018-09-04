@@ -33,6 +33,7 @@ var music = {
         audio.src = musicSrc[musicIndex]
         audio.play();
         musicPlaying = true; 
+        $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
         // senses when song has ended and then autoplays next song
         audio.addEventListener("ended", function(){
             musicIndex ++;
@@ -67,8 +68,8 @@ var music = {
             // Plays song
             else {
                 console.log("play music")
-                that.playMusic();
-                $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
+                audio.play();
+                $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png");
                 musicPlaying = true;
             }
         })
@@ -94,6 +95,9 @@ var rpg = {
             var choosen = $(this).data();
             // Player choosing their character
             if(!lockChar){
+                if(firstGame){
+                    music.playMusic();
+                }
                 // Prevents the player from choosing another character
                 lockChar = true; 
                 // Sets player data equal to that of clicked card
