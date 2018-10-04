@@ -1,5 +1,5 @@
 # unit-4-game 
-A simple RPG based on the anime "One Piece" 
+[A simple RPG](https://joverlee521.github.io/unit-4-game/) based on the anime "One Piece" 
 
 ![One Piece](https://github.com/joverlee521/unit-4-game/blob/master/assets/images/logo.png)
 
