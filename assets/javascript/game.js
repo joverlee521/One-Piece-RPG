@@ -33,6 +33,7 @@ var music = {
         audio.src = musicSrc[musicIndex]
         audio.play();
         musicPlaying = true; 
+        // Change to pause button on music player
         $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png")
         // senses when song has ended and then autoplays next song
         audio.addEventListener("ended", function(){
@@ -59,15 +60,14 @@ var music = {
         var that = this;
         // toggles play/pause button
         $("#play-pause").on("click", function(){
-            // Pauses song
+            // Pauses song if music is playing
             if(musicPlaying){
                 audio.pause();
                 $("#play-pause-button").attr("src", "assets/images/glyphicons-174-play.png");
                 musicPlaying = false; 
             }
-            // Plays song
+            // Plays music if music is not playing
             else {
-                console.log("play music")
                 audio.play();
                 $("#play-pause-button").attr("src", "assets/images/glyphicons-175-pause.png");
                 musicPlaying = true;
@@ -95,6 +95,7 @@ var rpg = {
             var choosen = $(this).data();
             // Player choosing their character
             if(!lockChar){
+                // Start background music if it is the first game
                 if(firstGame){
                     music.playMusic();
                 }
